@@ -4,6 +4,8 @@ const cityURL = 'http://dataservice.accuweather.com/locations/v1/cities/search?a
 
 
 const cityForm = document.getElementById("city_search");
+const resultsHolder = document.getElementById('results');
+
 
 cityForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -16,13 +18,25 @@ cityForm.addEventListener('submit', event => {
     fetch(cityURL + 'q=' + city.value, {'Accept-Encoding': 'gzip'})
         .then(res => res.json())
         .then(results => {
-            console.log(results);
+            for(const result in results) {
+                pushCityResult(result)   
+            }
         })
         .catch(error => {
             console.log(error);
         });
 
 });
+
+function pushCityResult(result) {
+    // create city_result element // fill in details // add to resultsHolder
+    // note to self: could create results class to construct a results generator template?
+    // what are the parts of a results element?
+    // city + datetime + temperature + weatherIcon + extra data specific to results type
+    // what are the types of results elements?
+    // locations + daily forecast + hourly forecast
+    
+}
 
 
 // Example of deep cloning a node and adding the copy to the DOM
