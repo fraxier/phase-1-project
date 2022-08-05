@@ -5,12 +5,29 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" media="screen" href="reset.css">
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='script.js' async defer></script>
 </head>
 <body>
-    <div class="header">
-        <h1>Weather Pal</h1>
+    <h1 class="header">Weather Pal</h1>
+    <div class="container">
+        <div class="topbar">
+            <form id="city_search">
+                <input id="city_input" type="text" placeholder="City Name" >
+                <input type="submit" value="Search" >
+            </form>
+        </div>
+        <div id="results">
+            <div class="result_card hidden">
+                <div class="front">
+                    FRONT
+                </div>
+                <div class="back">
+                    BACK
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
