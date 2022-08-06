@@ -7,24 +7,47 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" media="screen" href="reset.css">
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='script.js' async defer></script>
+    <script type="module" src='./js/script.js' async defer></script>
+    <script type="module" src="./js/classes.js" defer></script>
 </head>
 <body>
     <h1 class="header">Weather Pal</h1>
     <div class="container">
         <div class="topbar">
+            <div id="city_set">
+                <h4>Search a city</h4>
+                <p class="hidden">Change city</p>
+            </div>
             <form id="city_search">
                 <input id="city_input" type="text" placeholder="City Name" >
-                <input type="submit" value="Search" >
+                <input id="city_btn" type="submit" value="Search" >
+            </form>
+            <form id="forecast_form">
+                <select disabled id="forecast_selector">
+                    <option selected value="">Choose a forecast</option>
+                    <option value="daily">Daily Forecast</option>
+                    <option value="hourly">Hourly Forecast</option>
+                </select>
             </form>
         </div>
         <div id="results">
-            <div class="result_card hidden">
+            <div id="city_template" class="result_card city_card">
                 <div class="front">
-                    FRONT
+                    <ul>
+                        <li><h3 class="city_name">Sydney</h3></li>
+                        <li><b class="city_country">Australia</b></li>
+                        <li><small class="city_region">Oceania</small></li>
+                        <li><b class="city_timezone">AEST +10 GMT</b></li>
+                        <li><b class="city_time" title="10">Local Time: 19:22:34</b></li>
+                        <li><small class="city_dst" title="2022-10-01T16:00:00Z">Is DST: <i>No</i></small></li>
+                        <li><u class="city_geo">Latitude: -37.812<br>Longitude: 144.967</u></li>
+                    </ul>
                 </div>
                 <div class="back">
-                    BACK
+                    <div>
+                        <h3 class="city_name">Sydney</h3>
+                        <h5 title="Sydney - Australia">Set as city</h5>
+                    </div>
                 </div>
             </div>
         </div>

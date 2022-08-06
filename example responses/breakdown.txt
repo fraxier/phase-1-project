@@ -1,0 +1,76 @@
+Location
+
+Location Object
+    - Key
+    - EnglishName
+    - Region
+        -> EnglishName
+    - Country
+        -> EnglishName
+    - AdministrativeArea
+        -> EnglishName
+    - TimeZone
+        -> Code
+        -> GmtOffset
+        -> IsDaylightSaving
+        -> NextOffsetChange
+    - GeoPosition
+        -> Latitude + Longitude
+        -> Elevation
+            -> Metric/Imperial - VUU
+
+12Hourly
+
+Hourly Object
+    - Datetime + EpochDateTime
+    - WeatherIcon
+    - IconPhrase
+    - Temperature - Value, Unit, UnitType
+    - RealFeelTemperature - Feels Like
+    - Wind
+        -> Speed - Value, Unit, UnitType
+        -> Direction - Degrees, Localized (W N W)
+    - Visibility - VUU
+    - RainProbability
+    - SnowProbability
+
+5Daily
+
+Daily Object
+    - Headline
+        -> EffectiveDate + EffectiveEpochDate
+        -> Severity (0 = Unknown 1 = Significant 2 = Major 3 = Moderate 4 = Minor 5 = Minimal 6 = Insignificant 7 = Informational)
+        -> Text
+        -> Category
+        -> EndDate + EndEpochDate
+    - DailyForecasts [{}]
+        -> Date + EpochDate
+        -> Sun
+            - Rise + EpochRise
+            - Set + EpochSet
+        -> Moon
+            - Rise + EpochRise
+            - Set + EpochSet
+            - Phase (text)
+            - Age (no. days since new moon)
+        -> Temperature
+            - Minimum - VUU
+            - Maximum - VUU
+        -> RealFeelTemperature (feels like)
+            - minimum - VUU + Phrase
+            - maximum - VUU + Phrase
+        -> HoursOfSun
+        -> AirAndPollen [{}]
+            - Name
+            - Value (mold, grass, weed, and tree are displayed in parts per cubic meter. Air quality and UV index are indices and are unitless)
+            - Category (Hazard Level)
+        -> Day
+            - Icon
+            - IconPhrase
+            - ShortPhrase/LongPhrase
+            - RainProbability
+            - SnowProabbility
+            - Wind
+                -> Speed - VUU
+                -> Direction - Degrees, Localized (S S W)
+            
