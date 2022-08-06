@@ -70,7 +70,48 @@ class LocationMaker {
 }
 
 class Forecast {
-    
+    constructor(forecastObj) {
+        this.date = forecastObj.date;
+        this.icon = forecastObj.WeatherIcon | forecastObj.Icon;
+        this.iconPhrase = forecastObj.IconPhrase;
+        this.wind = {
+            speed: new VUUP(forecastObj.Wind.Speed),
+            direction: new VUUP(forecastObj.Wind.Direction)
+        },
+        this.rainProb = forecastObj.RainProbability,
+        this.snowProb = forecastObj.SnowProbability
+    }
+}
+
+class ForecastWithTemperature extends Forecast {
+    constructor(forecastObj) {
+        super(forecastObj);
+        this.temperature = new VUUP(forecastObj.Temperature);
+        this.feelTemperature = new VUUP(forecastObj.RealFeelTemperature);
+    }
+}
+
+class ForecastWithPhrases extends Forecast {
+    constructor(forecastObj) {
+        super(forecastObj);
+        this.shortPhrase = forecastObj.ShortPhrase;
+        this.longPhrase = forecastObj.LongPhrase
+    }
+}
+
+class DailyForecast {
+    constructor(forecastObj) {
+        this.date = new Date(forecastObj.Date);
+        this.minTemp = new VUUP(forecastObj.Temperature.Minimum);
+        this.maxTemp = new VUUP(forecastObj.Temperature.Maximum);
+        this.minFeelTemp = new VUUP(forecastObj.RealFeelTemperature.Minimum);
+        this.maxFeelTemp = new VUUP(forecastObj.RealFeelTemperature.Maximum);
+        this.air = forecastObj.AirAndPollen.find(obj => obj.Name === 'AirQuality').Category;
+        this.grass = forecastObj.AirAndPollen.find(obj => obj.Name === 'Grass').Category;
+        this.uv = forecastObj.AirAndPollen.find(obj => obj.Name === 'UVIndex').Category;
+        this.day = new ForecastWithPhrases(forecastObj.Day);
+        this.night = new ForecastWithPhrases(forecastObj.Night);
+    }
 }
 
 class VUUP {
@@ -80,13 +121,48 @@ class VUUP {
         this.type = obj.UnitType,
         this.phrase = obj.Phrase
     }
-
-    get stringify() {
+    toString() {
         return `${this.value}${this.unit}`;
+    }
+    toStringTemp() {
+        return `${this.value}°${this.unit}`;
     }
     get hasPhrase() {
         return !!this.phrase;
     }
 }
 
-export {LocationMaker, VUUP};
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+class DailyForecastMaker {
+    constructor(daily, htmlTemplate) {
+        this.template = htmlTemplate.cloneNode(true);
+        this.daily = daily;
+        this.#setupDetails();
+        this.template.classList.remove('hidden');
+    }
+    #setupDetails() {
+        const date = `${days[this.daily.date.getDay()]} ${this.daily.date.getDate()} ${months[this.daily.date.getMonth()]}`;
+        this.template.querySelector('.daily_date').innerText = date;
+        this.template.querySelector('.daily_feel_max').innerText = `Feels: ${this.daily.maxFeelTemp.phrase} ${this.daily.maxFeelTemp.toStringTemp()}`;
+        this.template.querySelector('.daily_feel_min').innerText = `Feels: ${this.daily.minFeelTemp.phrase} ${this.daily.minFeelTemp.toStringTemp()}`;
+        this.template.querySelector('.daily_day_icon').src = `./imgs/icons/${this.daily.day.icon.toString().padStart(2,'0')}-s.png`;
+        this.template.querySelector('.daily_day_phrase').innerText = this.daily.day.iconPhrase;
+        this.template.querySelector('.daily_air').innerText = `Air Quality: ${this.daily.air}`;
+        this.template.querySelector('.daily_grass').innerText = `Grass Levels: ${this.daily.grass}`;
+        this.template.querySelector('.daily_uv').innerText = `UV Levels: ${this.daily.uv}`;
+
+        this.template.querySelector('.daily_night_icon').src = `./imgs/icons/${this.daily.night.icon.toString().padStart(2,'0')}-s.png`;
+        this.template.querySelector('.daily_night_phrase').innerText = this.daily.night.iconPhrase;
+        this.template.querySelector('.daily_night_short').innerText = this.daily.night.shortPhrase;
+        this.template.querySelector('.daily_night_rain').innerText = `Chance of rain: ${this.daily.night.rainProb}%`;
+        this.template.querySelector('.daily_night_snow').innerText = `Chance of snow: ${this.daily.night.snowProb}%`;
+    }
+
+    get root() {
+        return this.template;
+    }
+}
+
+export {LocationMaker, DailyForecastMaker, DailyForecast};

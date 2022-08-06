@@ -31,7 +31,7 @@
             </form>
         </div>
         <div id="results">
-            <div id="city_template" class="result_card city_card">
+            <div id="city_template" class="result_card city_card hidden">
                 <div class="front">
                     <ul>
                         <li><h3 class="city_name">Sydney</h3></li>
@@ -48,6 +48,46 @@
                         <h3 class="city_name">Sydney</h3>
                         <h5 title="Sydney - Australia">Set as city</h5>
                     </div>
+                </div>
+            </div>
+            <div id="hourly_template" class="result_card hourly_card hidden">
+                <div class="front">
+                    <h4 class="hourly_date">Friday 07:00</h4>
+                    <img class="hourly_icon" src="./imgs/icons/01-s.png">
+                    <h5 class="hourly_phrase">sunny bunny!</h5>
+                    <p><b class="hourly_temp">26°C</b></p>
+                    <p>Feels like <b class="hourly_feel">23°C</b></p>
+                </div>
+                <div class="back">
+                    <h5 class="hourly_wind">100km/h NWN</h5>
+                    <h5 class="hourly_visibility">16km visibility</h5>
+
+                    <img src="./imgs/icons/12-s.png">
+                    <h5 class="hourly_rain">Chance of rain 1%</h5>
+                    <img src="./imgs/icons/24-s.png">
+                    <h5 class="hourly_snow">Chance of snow 0%</h5>
+                </div>
+            </div>
+            <div id="daily_template" class="result_card daily_card ">
+                <div class="front">
+                    <h4 class="daily_date"><b>Friday 6th August</b></h4>
+                    <span class="daily_feel_max">Feels: Pleasant 22.9°C</span>
+                    <span class="daily_feel_min">Feels: Chilly 8.9°C</span>
+                    <img class="daily_day_icon" src="./imgs/icons/01-s.png">
+                    <h6 class="daily_day_phrase">Breezy with decreasing clouds</h6>
+                    <ul>
+                        <li><b class="daily_air">Air Quality: Good</b></li>
+                        <li><b class="daily_grass">Grass Levels: Low</b></li>
+                        <li><b class="daily_uv">UV Levels: Moderate</b></li>
+                    </ul>
+                </div>
+                <div class="back">
+                    <h4>Night</h4>
+                    <img class="daily_night_icon" src="./imgs/icons/33-s.png">
+                    <h6 class="daily_night_phrase">Clear</h6>
+                    <span class="daily_night_short">Windy this evening; clear</span>
+                    <span class="daily_night_rain"><b>Chance of rain: 2%</b></span>
+                    <span class="daily_night_snow"><b>Chance of snow: 0%</b></span>
                 </div>
             </div>
         </div>

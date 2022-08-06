@@ -5,7 +5,7 @@ const hourlyURL = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour
 const dailyURL = 'http://dataservice.accuweather.com/forecasts/v1/daily/5daily/';
 const apiURL = '?apikey=IUSTDn34KIh85wmwYAsjamFp4miNNzEf&details=true&metric=true';
 
-import { LocationMaker, calculateLocalTime} from "./classes.js";
+import { LocationMaker, DailyForecastMaker, DailyForecast, calculateLocalTime} from "./classes.js";
 
 const cityForm = document.getElementById("city_search");
 const city = document.getElementById('city_input');
@@ -14,6 +14,7 @@ const forecastForm = document.getElementById("forecast_form");
 const forecastSelector = document.getElementById('forecast_selector');
 const resultsHolder = document.getElementById('results');
 const cityResultTemplate = document.getElementById('city_template');
+const dailyResultTemplate = document.getElementById('daily_template');
 
 let curCity = '';
 let curKey = '';
@@ -78,8 +79,16 @@ function h5ClickListener(event) {
     curKey = event.target.parentElement.querySelector('h3').title
 }
 
-async function getForecast() {
-    
+async function getDailyForecast(key) {
+    return fetch('./example responses/5daily.json')
+        .then(res => res.json())
+        .then(obj => {
+            for(const forecast of obj.DailyForecasts) {
+                const daily = new DailyForecast(forecast);
+                const maker = new DailyForecastMaker(daily, dailyResultTemplate);
+                resultsHolder.appendChild(maker.root);
+            }
+        })
 }
 
 function clearResults() {
@@ -114,6 +123,18 @@ forecastForm.addEventListener('submit', event => {
 forecastSelector.addEventListener('change', event => {
     console.log(event.target.value)
     console.log(curKey);
+    switch(event.target.value) {
+        case '':
+            break;
+        case 'daily':
+            getDailyForecast(curKey);
+            clearResults();
+            break;
+        case 'hourly':
+            getHourlyForecast(curKey);
+            clearResults();
+            break;
+    }
 });
 
 

@@ -143,6 +143,11 @@ input[type='submit'] {
     -moz-perspective: 150rem;
 }
 
+.result_card img {
+    margin: .5rem auto;
+    height: 100%;
+}
+
 .front, .back {
     background: white;
     position: absolute;
@@ -154,6 +159,14 @@ input[type='submit'] {
     transition: transform .8s;
     box-shadow:  0.2rem 0.2rem 0.2rem 0.1rem rgb(0 0 0 / 15%);
     border-radius: 10px;
+}
+
+.back, .front {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-content: center;
+    padding: .5rem
 }
 
 .front {
@@ -176,13 +189,6 @@ input[type='submit'] {
 }
 
 /* =========== City Results ============== */
-
-.city_card .back, .city_card .front {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-content: center;
-    align-content: center;
-}
 
 .city_card > div.front > ul > li:nth-child(3) {
     margin-bottom: 1rem;
@@ -207,4 +213,8 @@ input[type='submit'] {
 
 #city_set p {
     float: right;
+}
+/* ================ Daily Results ========== */
+.daily_card .back {
+    background: linear-gradient(to left bottom, #bcbcbc 0%, #7c7c7c 100%);
 }
