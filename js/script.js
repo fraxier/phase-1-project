@@ -79,7 +79,7 @@ function h5ClickListener(event) {
     clearResults();
     clearTimer();
     forecastSelector.disabled = false;
-    forecastSelector.target = '';
+    forecastSelector.value = '';
     city.disabled = true;
     cityBtn.disabled = true;
     document.getElementById('city_set').querySelector('p').classList.remove('hidden');
