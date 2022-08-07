@@ -123,7 +123,7 @@ class VUUP {
         this.phrase = obj.Phrase
     }
     toString() {
-        if (this.value === null || !this.unit === null) {
+        if (this.value === undefined || this.value === null) {
             return 'Unknown';
         }
         return `${this.value}${this.unit}`;
@@ -186,7 +186,7 @@ class HourlyForecastMaker {
         this.template.querySelector('.hourly_feel').innerText = this.hourly.feelTemperature.toStringTemp();
 
         this.template.querySelector('.hourly_wind').innerText = this.hourly.wind.speed.toString();
-        this.template.querySelector('.hourly_visibility').innerText = `${this.hourly.wind.direction.toString()} visibility`;
+        this.template.querySelector('.hourly_direction').innerText = `${this.hourly.wind.direction.toString()}`;
         this.template.querySelector('.hourly_rain').innerText = `Chance of rain: ${this.hourly.rainProb}%`;
         this.template.querySelector('.hourly_snow').innerText = `Chance of snow: ${this.hourly.snow}%`;
     }   
