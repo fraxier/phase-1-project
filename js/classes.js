@@ -71,7 +71,7 @@ class LocationMaker {
 
 class Forecast {
     constructor(forecastObj) {
-        this.date = forecastObj.date;
+        this.date = new Date(forecastObj.DateTime);
         this.icon = forecastObj.WeatherIcon | forecastObj.Icon;
         this.iconPhrase = forecastObj.IconPhrase;
         this.wind = {
@@ -165,4 +165,31 @@ class DailyForecastMaker {
     }
 }
 
-export {LocationMaker, DailyForecastMaker, DailyForecast};
+class HourlyForecastMaker {
+    constructor(forecastObj, htmlTemplate) {
+        this.template = htmlTemplate.cloneNode(true);
+        this.hourly = forecastObj;
+        this.#setupDetails();
+        this.template.classList.remove('hidden');
+    }
+
+    #setupDetails() {
+        const time = `${days[this.hourly.date.getDay()]} ${this.hourly.date.getHours().toString().padStart(2, '0')}:${this.hourly.date.getMinutes().toString().padStart(2, '0')}`;
+        this.template.querySelector('.hourly_date').innerText = time;
+        this.template.querySelector('.hourly_icon').src = `./imgs/icons/${this.hourly.icon.toString().padStart(2, '0')}-s.png`;
+        this.template.querySelector('.hourly_phrase').innerText = this.hourly.iconPhrase;
+        this.template.querySelector('.hourly_temp').innerText = this.hourly.temperature.toStringTemp();
+        this.template.querySelector('.hourly_feel').innerText = this.hourly.feelTemperature.toStringTemp();
+
+        this.template.querySelector('.hourly_wind').innerText = this.hourly.wind.speed.toString();
+        this.template.querySelector('.hourly_visibility').innerText = `${this.hourly.wind.direction.toString()} visibility`;
+        this.template.querySelector('.hourly_rain').innerText = `Chance of rain: ${this.hourly.rainProb}%`;
+        this.template.querySelector('.hourly_snow').innerText = `Chance of snow: ${this.hourly.snow}%`;
+    }   
+
+    get root() {
+        return this.template;
+    }
+}
+
+export {LocationMaker, DailyForecastMaker, DailyForecast, ForecastWithTemperature, HourlyForecastMaker};

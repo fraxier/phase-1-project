@@ -218,3 +218,14 @@ input[type='submit'] {
 .daily_card .back {
     background: linear-gradient(to left bottom, #bcbcbc 0%, #7c7c7c 100%);
 }
+/* ================ Hourly Results ========== */
+.hourly_card .back {
+    background: linear-gradient(to left bottom, #e34141 0%, #ecd32b 100%)
+}
+/* ================ Error Results ========== */
+#error_msg {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    grid-row-start: 1;
+    text-align: center;
+}

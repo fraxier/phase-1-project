@@ -5,7 +5,7 @@ const hourlyURL = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour
 const dailyURL = 'http://dataservice.accuweather.com/forecasts/v1/daily/5daily/';
 const apiURL = '?apikey=IUSTDn34KIh85wmwYAsjamFp4miNNzEf&details=true&metric=true';
 
-import { LocationMaker, DailyForecastMaker, DailyForecast, calculateLocalTime} from "./classes.js";
+import { LocationMaker, DailyForecastMaker, DailyForecast, calculateLocalTime, ForecastWithTemperature, HourlyForecastMaker} from "./classes.js";
 
 const cityForm = document.getElementById("city_search");
 const city = document.getElementById('city_input');
@@ -15,10 +15,11 @@ const forecastSelector = document.getElementById('forecast_selector');
 const resultsHolder = document.getElementById('results');
 const cityResultTemplate = document.getElementById('city_template');
 const dailyResultTemplate = document.getElementById('daily_template');
+const hourlyResultTemplate = document.getElementById('hourly_template');
+const errorResult = document.getElementById('error_msg');
 
 let curCity = '';
 let curKey = '';
-let curForecast = '';
 let times = [];
 let timer = '';
 
@@ -36,21 +37,13 @@ cityForm.addEventListener('submit', event => {
     }
     city.classList.remove('error');
     curCity = city.value;
+    clearResults();
 
-    // fetch(cityURL + 'q=' + city.value, {'Accept-Encoding': 'gzip'})
-    //     .then(res => res.json())
-    //     .then(results => {
-    //         for(const result in results) {
-    //             pushCityResult(result)   
-    //         }
-    //         timer = setInterval(activateTimers, 1000);
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
-
-    return fetch('./example responses/locations.json')
-        .then(res => res.json())
+    return fetch(cityURL + 'q=' + city.value, {'Accept-Encoding': 'gzip'})
+        .then(res => {
+            console.log(res);
+            return res.json()
+        })
         .then(results => {
             for(const result of results) {
                 pushCityResult(result)   
@@ -58,8 +51,21 @@ cityForm.addEventListener('submit', event => {
             timer = setInterval(activateTimers, 1000);
         })
         .catch(error => {
-            console.log(error);
+            errorResult.classList.remove('hidden');
+            errorResult.querySelector('p').innerText = error.stack + ' ' + error.msg;
         });
+
+    // return fetch('./example responses/locations.json')
+    //     .then(res => res.json())
+    //     .then(results => {
+    //         for(const result of results) {
+    //             pushCityResult(result)   
+    //         }
+    //         timer = setInterval(activateTimers, 1000);
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
 });
 
 document.getElementById('city_set').querySelector('p').addEventListener('click', event => {
@@ -73,22 +79,11 @@ function h5ClickListener(event) {
     clearResults();
     clearTimer();
     forecastSelector.disabled = false;
+    forecastSelector.target = '';
     city.disabled = true;
     cityBtn.disabled = true;
     document.getElementById('city_set').querySelector('p').classList.remove('hidden');
     curKey = event.target.parentElement.querySelector('h3').title
-}
-
-async function getDailyForecast(key) {
-    return fetch('./example responses/5daily.json')
-        .then(res => res.json())
-        .then(obj => {
-            for(const forecast of obj.DailyForecasts) {
-                const daily = new DailyForecast(forecast);
-                const maker = new DailyForecastMaker(daily, dailyResultTemplate);
-                resultsHolder.appendChild(maker.root);
-            }
-        })
 }
 
 function clearResults() {
@@ -97,6 +92,8 @@ function clearResults() {
         resultsHolder.removeChild(child);
         child = resultsHolder.lastElementChild;
     }
+    errorResult.classList.add('hidden');
+    errorResult.querySelector('p'). innerText = '';
 }
 
 function clearTimer() {
@@ -117,9 +114,78 @@ function activateTimers() {
     }
 }
 
+function getDailyForecast(key) {
+
+    return fetch(dailyURL + '' + key + apiURL, {'Accept-Encoding': 'gzip'})
+        .then(res => {
+            console.log(res);
+            return res.json()
+        })
+        .then(forecasts => {
+            for(const forecast of forecasts.DailyForecasts) {
+                const daily = new DailyForecast(forecast);
+                const maker = new DailyForecastMaker(daily, dailyResultTemplate);
+                resultsHolder.appendChild(maker.root);
+            }
+        })
+        .catch(error => {
+            errorResult.classList.remove('hidden');
+            errorResult.querySelector('p').innerText = error.stack + ' ' + error.msg;
+        })
+
+    // return fetch('./example responses/5daily.json')
+    //     .then(res => res.json())
+    //     .then(forecasts => {
+    //         for(const forecast of forecasts.DailyForecasts) {
+    //             const daily = new DailyForecast(forecast);
+    //             const maker = new DailyForecastMaker(daily, dailyResultTemplate);
+    //             resultsHolder.appendChild(maker.root);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         errorResult.classList.remove('hidden');
+    //         errorResult.querySelector('p').innerText = error.stack + ' ' + error.msg;
+    //     })
+}
+
+function getHourlyForecast(key) {
+
+    return fetch(hourlyURL + '' + key + apiURL, {'Accept-Encoding': 'gzip'})
+        .then(res => {
+            console.log(res);
+            return res.json()
+        })
+        .then(forecasts => {
+            for(const forecast of forecasts) {
+                const hour = new ForecastWithTemperature(forecast);
+                const maker = new HourlyForecastMaker(hour, hourlyResultTemplate);
+                resultsHolder.appendChild(maker.root);
+            }
+        })
+        .catch(error => {
+            errorResult.classList.remove('hidden');
+            errorResult.querySelector('p').innerText = error.stack + ' ' + error.msg;
+        })
+
+    // return fetch('./example responses/12hourly.json')
+    //     .then(res => res.json())
+    //     .then(forecasts => {
+    //         for(const forecast of forecasts) {
+    //             const hour = new ForecastWithTemperature(forecast);
+    //             const maker = new HourlyForecastMaker(hour, hourlyResultTemplate);
+    //             resultsHolder.appendChild(maker.root);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         errorResult.classList.remove('hidden');
+    //         errorResult.querySelector('p').innerText = error.stack + ' ' + error.msg;
+    //     })
+}
+
 forecastForm.addEventListener('submit', event => {
     event.preventDefault();
 });
+
 forecastSelector.addEventListener('change', event => {
     console.log(event.target.value)
     console.log(curKey);
@@ -127,16 +193,15 @@ forecastSelector.addEventListener('change', event => {
         case '':
             break;
         case 'daily':
-            getDailyForecast(curKey);
             clearResults();
+            getDailyForecast(curKey);
             break;
         case 'hourly':
-            getHourlyForecast(curKey);
             clearResults();
+            getHourlyForecast(curKey);
             break;
     }
 });
-
 
 // create city_result element // fill in details // add to resultsHolder
 // note to self: could create results class to construct a results generator template?
