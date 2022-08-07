@@ -78,8 +78,8 @@ class Forecast {
             speed: new VUUP(forecastObj.Wind.Speed),
             direction: new VUUP(forecastObj.Wind.Direction)
         },
-        this.rainProb = forecastObj.RainProbability || '0',
-        this.snowProb = forecastObj.SnowProbability || '0',
+        this.rainProb = forecastObj.RainProbability,
+        this.snowProb = forecastObj.SnowProbability,
         this.visibility = new VUUP(forecastObj);
     }
 }
