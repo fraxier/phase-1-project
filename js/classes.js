@@ -78,8 +78,8 @@ class Forecast {
             speed: new VUUP(forecastObj.Wind.Speed),
             direction: new VUUP(forecastObj.Wind.Direction)
         },
-        this.rainProb = forecastObj.RainProbability,
-        this.snowProb = forecastObj.SnowProbability,
+        this.rainProb = forecastObj.RainProbability === undefined ? 'Unknown ': forecastObj.RainProbability,
+        this.snowProb = forecastObj.SnowProbability === undefined ? 'Unknown ': forecastObj.SnowProbability,
         this.visibility = new VUUP(forecastObj);
     }
 }
