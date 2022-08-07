@@ -78,8 +78,9 @@ class Forecast {
             speed: new VUUP(forecastObj.Wind.Speed),
             direction: new VUUP(forecastObj.Wind.Direction)
         },
-        this.rainProb = forecastObj.RainProbability,
-        this.snowProb = forecastObj.SnowProbability
+        this.rainProb = forecastObj.RainProbability || '0',
+        this.snowProb = forecastObj.SnowProbability || '0',
+        this.visibility = new VUUP(forecastObj);
     }
 }
 
@@ -122,6 +123,9 @@ class VUUP {
         this.phrase = obj.Phrase
     }
     toString() {
+        if (this.value === null || !this.unit === null) {
+            return 'Unknown';
+        }
         return `${this.value}${this.unit}`;
     }
     toStringTemp() {

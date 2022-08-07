@@ -92,18 +92,21 @@ function h5ClickListener(event) {
 }
 
 function clearResults() {
-    let child = resultsHolder.lastElementChild;
-    for(const child of resultsHolder.children) {
-        if (child.id !== 'error_msg') {
-            resultsHolder.removeChild(child);
-        }
-    }
-    // while (child && resultsHolder.children.length > 2) {
+    // for(const child of resultsHolder.children) {
     //     if (child.id !== 'error_msg') {
     //         resultsHolder.removeChild(child);
     //     }
-    //     child = resultsHolder.lastElementChild;
     // }
+
+    let child = resultsHolder.lastElementChild;
+    while (resultsHolder.firstElementChild !== resultsHolder.lastElementChild) {
+        if (child.id !== 'error_msg') {
+            resultsHolder.removeChild(child);
+            child = resultsHolder.lastElementChild;
+        } else {
+            child = resultsHolder.firstElementChild
+        }
+    }
     errorResult.classList.add('hidden');
     errorResult.querySelector('p'). innerText = '';
 }
