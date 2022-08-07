@@ -2,7 +2,7 @@
 
 const cityURL = 'https://dataservice.accuweather.com/locations/v1/cities/search?apikey=IUSTDn34KIh85wmwYAsjamFp4miNNzEf&';
 const hourlyURL = 'https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/';
-const dailyURL = 'https://dataservice.accuweather.com/forecasts/v1/daily/5daily/';
+const dailyURL = 'https://dataservice.accuweather.com/forecasts/v1/daily/5day/';
 const apiURL = '?apikey=IUSTDn34KIh85wmwYAsjamFp4miNNzEf&details=true&metric=true';
 
 import { LocationMaker, DailyForecastMaker, DailyForecast, calculateLocalTime, ForecastWithTemperature, HourlyForecastMaker} from "./classes.js";
