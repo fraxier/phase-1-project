@@ -45,10 +45,15 @@ cityForm.addEventListener('submit', event => {
             return res.json()
         })
         .then(results => {
-            for(const result of results) {
-                pushCityResult(result)   
+            if (results.length > 0) {
+                for(const result of results) {
+                    pushCityResult(result)   
+                }
+                timer = setInterval(activateTimers, 1000);
+            } else {
+                errorResult.classList.remove('hidden');
+                errorResult.querySelector('p').innerText = `No results were found for ${curCity}! Please try again.`;
             }
-            timer = setInterval(activateTimers, 1000);
         })
         .catch(error => {
             errorResult.classList.remove('hidden');
@@ -88,10 +93,17 @@ function h5ClickListener(event) {
 
 function clearResults() {
     let child = resultsHolder.lastElementChild;
-    while (child) {
-        resultsHolder.removeChild(child);
-        child = resultsHolder.lastElementChild;
+    for(const child of resultsHolder.children) {
+        if (child.id !== 'error_msg') {
+            resultsHolder.removeChild(child);
+        }
     }
+    // while (child && resultsHolder.children.length > 2) {
+    //     if (child.id !== 'error_msg') {
+    //         resultsHolder.removeChild(child);
+    //     }
+    //     child = resultsHolder.lastElementChild;
+    // }
     errorResult.classList.add('hidden');
     errorResult.querySelector('p'). innerText = '';
 }
