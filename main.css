@@ -230,7 +230,7 @@ input[type='submit'] {
     text-align: center;
 }
 /* =============== Breakpoints ============== */
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 875px) {
   #city_set {
     grid-column-start: 3;
     grid-row-start: 2;
