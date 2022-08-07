@@ -71,7 +71,7 @@ input:-internal-autofill-selected {
 }
 
 input:active, select:active {
-    border:none
+    border:1px solid transparent;
 }
 
 input[type='submit'] {
@@ -228,4 +228,38 @@ input[type='submit'] {
     grid-column-end: -1;
     grid-row-start: 1;
     text-align: center;
+}
+/* =============== Breakpoints ============== */
+@media screen and (max-width: 850px) {
+  #city_set {
+    grid-column-start: 3;
+    grid-row-start: 2;
+  }
+  #city_search {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+  #forecast_form {
+    grid-row-start: 3;
+    grid-column-start: 3;
+  }
+}
+@media screen and (max-width: 800px) {
+  #results {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (max-width: 583px) {
+  #city_btn {
+    margin-top: 1rem;  
+  }
+  .topbar {
+    grid-template-rows: 2fr 1fr 1fr;
+  }
+}
+@media screen and (max-width: 560px) {
+  #results {
+    grid-template-columns: 1fr;
+  }
 }
